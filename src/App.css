@@ -1,7 +1,16 @@
 .fill {
-  background-color: #ebebfb;
+  background-color: lightslategray;
   height: 100vh;
 }
-body {
-  background-color: #e6e6fa;
+.navSetting {
+  background-color: white;
+  font-family: "Lato", sans-serif;
+  text-align: center;
+  font-size: 1.5rem;
+  border-radius: 4px;
+  box-shadow: black 2px 2px 0 0;
+}
+
+.tableBackground {
+  background-color: white;
 }

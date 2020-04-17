@@ -3,13 +3,14 @@ const axios = require("axios");
 
 router.route("/search/:id").get((req, res) => {
   axios
-    .get(`https://swapi.dev/api/people/?search=${req.params.id}`, {})
+    .get(`https://swapi.dev/api/planets/?search=${req.params.id}`, {})
     .then((response) => {
       if (response.data.results.length > 0) {
         obj = {
           name: response.data.results[0].name,
-          height: response.data.results[0].height,
-          weight: response.data.results[0].mass,
+          diameter: response.data.results[0].diameter,
+          climate: response.data.results[0].climate,
+          population: response.data.results[0].population,
         };
         res.json(obj);
       }
