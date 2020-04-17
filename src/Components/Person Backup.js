@@ -1,30 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Table, InputGroup, Row, Form } from "react-bootstrap";
 import Axios from "axios";
 
 const Person = () => {
-  const [person, setPerson] = useState("");
-  const [fieldValue, setFieldValue] = useState("");
-
+  const [person, setPerson] = useState(0);
+  let i;
+  const handleChange = (event) => {
+    i = event.target.value;
+  };
+  useEffect(() => {
+    drawTable();
+    console.log(person);
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (fieldValue !== "" && fieldValue !== undefined) {
-      Axios.get(`http://localhost:5000/api/person/search/${fieldValue}`, {})
-        .then((response) => {
-          if (response.data !== {}) {
-            setPerson({ person: response.data });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      alert("Field cannot be empty!");
-    }
+    Axios.get(`http://localhost:5000/api/person/search/${i}`, {})
+      .then((response) => {
+        console.log("logging response:");
+        console.log(response.data);
+        if (response.data !== {}) {
+          setPerson({ person: response.data });
+          console.log("response.data is not empty");
+        } else {
+          console.log(`${person} returned no results!`);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
   const drawTable = () => {
-    if (person !== "" && "name" in person.person) {
+    if (person !== 0) {
       return (
         <>
           <Table bordered hover className="text-center w-25 tableBackground">
@@ -46,8 +52,7 @@ const Person = () => {
         </>
       );
     } else {
-      if (person === "") return null;
-      return "NO RESULTS";
+      return null;
     }
   };
   return (
@@ -60,8 +65,8 @@ const Person = () => {
         <InputGroup className="w-25">
           <Form.Control
             placeholder="Search by name..."
-            value={fieldValue}
-            onChange={(e) => setFieldValue(e.target.value)}
+            value={i}
+            onChange={(e) => handleChange(e)}
             type="text"
           />
           <Button onClick={(e) => handleSubmit(e)} size="sm" variant="dark">

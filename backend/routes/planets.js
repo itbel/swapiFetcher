@@ -3,8 +3,11 @@ const axios = require("axios");
 
 router.route("/search/:id").get((req, res) => {
   axios
-    .get(`https://swapi.dev/api/planets/?search=${req.params.id}`, {})
+    .get(`https://swapi.dev/api/planets/?search=${req.params.id}`, {
+      timeout: 2000,
+    })
     .then((response) => {
+      let obj = {};
       if (response.data.results.length > 0) {
         obj = {
           name: response.data.results[0].name,
@@ -12,8 +15,8 @@ router.route("/search/:id").get((req, res) => {
           climate: response.data.results[0].climate,
           population: response.data.results[0].population,
         };
-        res.json(obj);
       }
+      res.json(obj);
     })
     .catch((error) => {
       console.log(error);

@@ -1,31 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Table, InputGroup, Row, Form } from "react-bootstrap";
 import Axios from "axios";
 
 const Planet = () => {
-  const [planet, setPlanet] = useState(0);
-  let i;
-  const handleChange = (event) => {
-    i = event.target.value;
-  };
-  useEffect(() => {
-    drawTable();
-  });
-  const handleSubmit = () => {
-    Axios.get(`http://localhost:5000/api/planet/search/${i}`)
-      .then((response) => {
-        console.log(response);
-        setPlanet({ planet: response.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const [planet, setPlanet] = useState("");
+  const [fieldValue, setFieldValue] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (fieldValue !== "" && fieldValue !== undefined) {
+      Axios.get(`http://localhost:5000/api/planet/search/${fieldValue}`)
+        .then((response) => {
+          if (response.data !== {}) {
+            setPlanet({ planet: response.data });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      alert("Fields cannot be empty!");
+    }
   };
   const drawTable = () => {
-    if (planet !== 0) {
+    if (planet !== "" && "name" in planet.planet) {
       return (
         <>
-          <Table striped bordered hover className="text-center w-25">
+          <Table
+            striped
+            bordered
+            hover
+            className="tableBackground text-center w-25"
+          >
             <thead>
               <tr>
                 <th>Name</th>
@@ -46,7 +52,8 @@ const Planet = () => {
         </>
       );
     } else {
-      return null;
+      if (planet === "") return null;
+      return "NO RESULTS";
     }
   };
   return (
@@ -59,11 +66,11 @@ const Planet = () => {
         <InputGroup className="w-25">
           <Form.Control
             placeholder="Search by planet name..."
-            value={i}
-            onChange={handleChange}
+            value={fieldValue}
+            onChange={(e) => setFieldValue(e.target.value)}
             type="text"
           />
-          <Button onClick={handleSubmit} size="sm" variant="dark">
+          <Button onClick={(e) => handleSubmit(e)} size="sm" variant="dark">
             Search
           </Button>
         </InputGroup>
