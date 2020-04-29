@@ -11,4 +11,4 @@ The purpose of this application was to develop skills in using RESTful APIs.
 
 ## Images
 
-![Home Screen](https://github.com/itbel/swapiFetcher/tree/master/images/swapi1.png?raw=true)
+![Home Screen](https://github.com/itbel/swapiFetcher/blob/master/images/swapi1.png?raw=true)
